@@ -202,7 +202,9 @@ function sketchSnailRace(p) {
 
   }
 
-  // M_6_1_01
+
+// following sketch is based off of code from...
+// M_6_1_01
 //
 // Generative Gestaltung – Creative Coding im Web
 // ISBN: 978-3-87439-902-9, First Edition, Hermann Schmidt, Mainz, 2018
@@ -220,8 +222,6 @@ function sketchSnailRace(p) {
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-
 function sketchSpaceDebris(p) {
 
     // An array with nodes
@@ -333,6 +333,8 @@ function sketchSpaceDebris(p) {
       p.ellipse(moonX, moonY, 40, 40);
     }
   
+    // twinkling star code from Vivek Singh Negi
+    // https://github.com/negiyosai/fractalforest
     // star class
     class Star {
       constructor() {
@@ -355,6 +357,11 @@ function sketchSpaceDebris(p) {
     }
 
     // node class
+    // based off of code from 
+    // Generative Gestaltung – Creative Coding im Web
+    // ISBN: 978-3-87439-902-9, First Edition, Hermann Schmidt, Mainz, 2018
+    // Benedikt Groß, Hartmut Bohnacker, Julia Laub, Claudius Lazzeroni
+    // with contributions by Joey Lee and Niels Poldervaart
     class Node {
         constructor(x, y, minX, maxX, minY, maxY) {
           p5.Vector.call(this, x, y, 0);
