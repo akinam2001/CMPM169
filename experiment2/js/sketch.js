@@ -1,7 +1,8 @@
 // sketch.js - purpose and description here
-// Author: Your Name
-// Date:
+// Author: Anika Mahajan
+// Date: 01/24/2023
 
+// following sketch was made in collaboration with Justin Beedle
 function sketchSnailRace(p) {
     let inc = 0.008;
     let inc1 = 0.008;
