@@ -47,7 +47,7 @@ function nightSkySketch(p) {
       // code by Gabriela Voll from "UniverseGen"
     
       // randomly pick x and y
-      co = p.createVector(p.random(-w, w*2), p.random(-w, w));
+      co = p.createVector(p.random(-w*3,w*3),p.random(-w*3,w*3));
       
       // every 100 stars have a bigger diameter
       if(i % 100 == 0){
@@ -60,7 +60,7 @@ function nightSkySketch(p) {
       
       // keep picking random diameter until star can be placed
       while(TestStars(co, dia, i) == false){
-         co = p.createVector(p.random(-w*2,w*2),p.random(-w*2,w*2)); 
+         co = p.createVector(p.random(-w*3,w*3),p.random(-w*3,w*3)); 
          if(i % 100 == 0){
            m = MAXDB;
          } else {
