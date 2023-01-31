@@ -13,9 +13,10 @@ body {
     align-items: center;
 }
 
-#nightSkyContainer {
+#nightSkyContainer, #fractalTreeContainer {
     width: 100%;
     height: auto;
+    text-align: center;
 }
 
 h2 {

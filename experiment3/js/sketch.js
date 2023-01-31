@@ -133,4 +133,212 @@ function nightSkySketch(p) {
     }
 }
 
+function fractalTreeSketch(p) {
+    //   L-System Code from Paul Wheeler's "L-System Example"
+    /*
+      https://en.wikipedia.org/wiki/L-system#Example_7:_Fractal_plant
+      
+      variables : X F
+      constants : + − [ ]
+      start  : X
+      rules  : (X → F+[[X]-X]-F[-FX]+X), (F → FF)
+      angle  : 25°
+      
+      F means "draw forward", − means "turn right 25°",
+      and + means "turn left 25°". X does not
+      correspond to any drawing action and is used to
+      control the evolution of the curve. The square
+      bracket "[" corresponds to saving the current
+      values for position and angle, which are restored
+      when the corresponding "]" is executed.
+    */
+
+    const X = 0, Y = 1;
+
+    const rules = {
+        // X: "F+[[X]-X]-F[-FX]+X",
+        // Here's a much simpler alternative:
+        X: "F+[X-FX]-[X+FX]-[X+FX]",
+        F: "FF",
+
+        // This varient gets really complex at iteration 6
+        //"X": "F",
+        //"F": "FF-[-F+F]+[+F-F]"
+    };
+
+    const initialAngle = 65;
+    const turnAngle = 25;
+
+    let scale = 128;
+    let instructions = rules["X"];
+    let iterations = 1;
+
+    let iterator;
+
+    let angle;
+    let branchLength;
+
+    p.setup = function () {
+        p.createCanvas(p.windowWidth - 100, p.windowHeight - 100);
+        p.background("#66999b");
+        p.angleMode(p.DEGREES);
+        p.textSize(18);
+        p.textAlign(p.LEFT, p.TOP);
+        p.fill("#19381F");
+
+        p.text(
+            `iteration ${iterations}${iterations == 8 ? " (Max)" : ""}: ${compact(
+                instructions
+            )}`,
+            10,
+            10
+        );
+        iterator = progressiveExecute();
+
+        angle = 25;
+        p.stroke("#5A352A");
+        p.translate(p.width / 2, p.height);
+        branchLength = p.height / 4;
+        branch(p.height / 4);
+    };
+
+    p.draw = function () {
+        p.push();
+        // Position 0, 0 at the bottom center
+        p.translate(p.width / 2, p.height);
+        // Make positive in the y axis up from the bottom
+        p.scale(1, -1);
+
+        let val = iterator.next();
+        if (val.value) {
+            p.noLoop();
+        }
+
+        p.pop();
+    };
+
+    function* progressiveExecute() {
+        let states = [];
+        let state = { position: [0, 0], angle: initialAngle };
+
+        for (let i = 0; i < instructions.length; i++) {
+            state = executeInstruction(instructions[i], state, states);
+            if (instructions[i] === "F" && instructions[i + 1] !== "F") {
+                // Only yield when we've just finished drawing a line
+                yield false;
+            }
+        }
+
+        yield true;
+    }
+
+    function executeInstruction(instruction, state, states) {
+        switch (instruction) {
+            case "F":
+                let newPos = [
+                    state.position[X] + p.cos(state.angle) * scale,
+                    state.position[Y] + p.sin(state.angle) * scale,
+                ];
+
+                p.line(state.position[X], state.position[Y], newPos[X], newPos[Y]);
+                return { ...state, position: newPos };
+            case "[":
+                p.push();
+                // p.stroke("#ff000077");
+                // p.strokeWeight(3);
+                // p.point(state.position[X], state.position[Y]);
+                p.pop();
+                states.push(state);
+                break;
+            case "]":
+                p.push();
+                // p.stroke("#00800077");
+                // p.strokeWeight(3);
+                // p.point(state.position[X], state.position[Y]);
+                p.pop();
+                return states.pop();
+            case "+":
+                return { ...state, angle: state.angle + turnAngle };
+            case "-":
+                return { ...state, angle: state.angle - turnAngle };
+        }
+
+        return state;
+    }
+
+    p.keyPressed = function () {
+        if (iterations < 5) {
+            iterations++;
+            let newInstructions = "";
+            for (let i = 0; i < instructions.length; i++) {
+                let sub = rules[instructions[i]];
+                if (sub) {
+                    newInstructions += sub;
+                } else {
+                    newInstructions += instructions[i];
+                }
+            }
+
+            instructions = newInstructions;
+            scale /= 2;
+            p.background("#66999b");
+            p.text(
+                `iteration ${iterations}${iterations == 8 ? " (Max)" : ""}: ${compact(
+                    instructions
+                )}`,
+                10,
+                10
+            );
+            iterator = progressiveExecute();
+            p.loop();
+
+            branchLength = branchLength / 3;
+            p.translate(p.width / 2, p.height);
+            branch(p.height / 4);
+        }
+    };
+
+    function compact(instructions) {
+        let str = "";
+        let fs = 0;
+        for (let i = 0; i < instructions.length; i++) {
+            if (instructions[i] == "F") {
+                fs++;
+            } else {
+                if (fs > 1) {
+                    str += `F(${fs})`;
+                } else if (fs > 0) {
+                    str += "F";
+                }
+
+                fs = 0;
+                str += instructions[i];
+            }
+        }
+
+        return str;
+    }
+
+    // from lecture
+    function branch(len) {
+        p.stroke("#5A352A");
+        p.push();
+        p.rotate(-25);
+        p.line(0, 0, 0, -len);
+
+        p.translate(0, -len);
+        if (len > branchLength) {
+            p.rotate(angle);
+            branch(len * 0.67);
+            p.rotate(-angle);
+            // recursively call branch
+            branch(len * 0.67);
+        }
+        p.pop()
+
+    }
+
+}
+
 new p5(nightSkySketch, 'nightSkyContainer');
+new p5(fractalTreeSketch, 'fractalTreeContainer');
