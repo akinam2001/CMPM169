@@ -95,7 +95,7 @@ function nightSkySketch(p) {
             cScale += 0.02;
         }
 
-        angle += 0.0005;
+        angle += 0.001;
     }
 
     // class for star
