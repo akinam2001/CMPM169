@@ -92,7 +92,7 @@ function nightSkySketch(p) {
 
         // controls how much of moon gets filled
         if (i % 100 == 0) {
-            cScale += 0.05;
+            cScale += 0.02;
         }
 
         angle += 0.0005;
