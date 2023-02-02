@@ -1,7 +1,10 @@
-// sketch.js - purpose and description here
-// Author: Your Name
-// Date:
+// sketch.js - series of experiments for Experiment 3 for CMPM 169
+// Author: Anika Mahajan
+// Date: 01/30/2023
 
+
+// code based on Gabriela Voll's "Universe Gen" for star generation
+// and Andrea Diotallevi's "Moonlight" for the moon
 function nightSkySketch(p) {
 
     // for star generation
@@ -133,6 +136,8 @@ function nightSkySketch(p) {
     }
 }
 
+// L-System Code based on Paul Wheeler's "L-System Example"
+// and fractal tree code based on Wes Modes' CMPM 169 lecture
 function fractalTreeSketch(p) {
     //   L-System Code from Paul Wheeler's "L-System Example"
     /*
