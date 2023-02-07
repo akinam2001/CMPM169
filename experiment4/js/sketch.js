@@ -21,6 +21,7 @@ const SPEED = 2.5;
 const SPAN = (600 * 0.9) / 5;
 let strings = [];
 let balls = [];
+let cam;
 
 // notes for the different bars
 let notes = [
