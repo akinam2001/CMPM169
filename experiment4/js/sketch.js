@@ -143,6 +143,7 @@ class PlayString {
 }
 
 function setup() {
+  getAudioContext().suspend();
   createCanvas(600, 600, WEBGL);
   background(100);
 
@@ -239,6 +240,7 @@ class Ball {
 }
 
 function mousePressed() {
+  userStartAudio();
   // adds new ball if mouse is clicked
   balls.push(new Ball(random(5,25), random(1,6), random(0.02, 0.08), random(0.4, 0.8), random(-width/2 + 20, width/2 - 20) + cam.eyeX, -height/2));
 }
