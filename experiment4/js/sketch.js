@@ -49,7 +49,7 @@ class PlayString {
     this.trTime = 0;
     this.useFreq = 0;
 
-    this.envelope = new Envelope();
+    this.envelope = new p5.Envelope();
     this.envelope.setADSR(
       random(15, 40) / 1000,
       random(10, 50) / 100,
