@@ -81,7 +81,7 @@ function setup() {
   mouseClicks = 0;
   
   
-  ship = loadModel("model.obj", true);
+  ship = loadModel("assets/model.obj", true);
 }
 
 function draw() {
