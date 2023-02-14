@@ -41,7 +41,6 @@ function setup() {
   createCanvas(1280, 720, WEBGL);
 
   cols = w / sc;
-  console.log(w/sc);
   rows = h / sc;
   for (let x = 0; x < cols; ++x) {
     terrain[x] = [];
@@ -79,8 +78,6 @@ function setup() {
     }
   }
   mouseClicks = 0;
-  
-  
   ship = loadModel("assets/model.obj", true);
 }
 
