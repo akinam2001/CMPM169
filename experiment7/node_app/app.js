@@ -28,6 +28,12 @@ m.messages.forEach(function(p){
             q.name = "REDACTED";
         });
     }
+    if(p.content) {
+        if(p.content.includes("@")) {
+            console.log("reach");
+            p.content = p.content.replace("@", "");
+        }
+    }
     if(p.reactions){
         p.reactions.forEach(function(q){
             q.actor = "REDACTED";
