@@ -23,6 +23,14 @@ let name = '../json/cardifferent.json';
 let m = JSON.parse(fs.readFileSync(name).toString());
 m.messages.forEach(function(p){
     p.sender_name= "REDACTED";
+    if(p.content){
+        if(p.content.includes("â")) {
+            p.content.replace("â", '\'');
+        }
+        if(p.content.includes("â")) {
+            p.content.replace("â", '\'');
+        }
+    }
     if(p.reactions){
         p.reactions.forEach(function(q){
             q.actor = "REDACTED";
