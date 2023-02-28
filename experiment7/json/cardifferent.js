@@ -1,4 +1,4 @@
-{
+let messages = {
     "messages": [
         {
             "sender_name": "REDACTED",
@@ -51434,3 +51434,5 @@
         }
     ]
 }
+
+export default messages;
