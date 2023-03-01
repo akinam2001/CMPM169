@@ -1,24 +1,27 @@
-// // project.js - purpose and description here
-// // Author: Your Name
-// // Date:
+// project.js - purpose and description here
+// Author: Your Name
+// Date:
 
 // importing JSON
 import messages from './../json/cardifferent.js';
 
 let messageString = "";
+let stopwords = new Set("i,me,my,myself,we,us,our,ours,ourselves,you,your,yours,yourself,yourselves,he,him,his,himself,she,her,hers,herself,it,its,itself,they,them,their,theirs,themselves,what,which,who,whom,whose,this,that,these,those,am,is,are,was,were,be,been,being,have,has,had,having,do,does,did,doing,will,would,should,can,could,ought,i'm,you're,he's,she's,it's,we're,they're,i've,you've,we've,they've,i'd,you'd,he'd,she'd,we'd,they'd,i'll,you'll,he'll,she'll,we'll,they'll,isn't,aren't,wasn't,weren't,hasn't,haven't,hadn't,doesn't,don't,didn't,won't,wouldn't,shan't,shouldn't,can't,cannot,couldn't,mustn't,let's,that's,who's,what's,here's,there's,when's,where's,why's,how's,a,an,the,and,but,if,or,because,as,until,while,of,at,by,for,with,about,against,between,into,through,during,before,after,above,below,to,from,up,upon,down,in,out,on,off,over,under,again,further,then,once,here,there,when,where,why,how,all,any,both,each,few,more,most,other,some,such,no,nor,not,only,own,same,so,than,too,very,say,says,said,shall,it'll".split(","))
 
+let numRegex = /\d+/g;
+let letterRegex = /^[a-zA-Z]$/g;
 messages.messages.forEach(function (m) {
   if (m.content) {
     if (!m.content.includes(".com")) {
       m.content = m.content.replace("/", " ");
-      if(m.content.includes("y'all")) {
+      if (m.content.includes("y'all")) {
         m.content = m.content.replace("y'all", "yall");
       }
-      if(m.content.includes("ya'll")) {
+      if (m.content.includes("ya'll")) {
         m.content = m.content.replace("ya'll", "yall");
       }
-      if(m.content.includes("/")) {
-         m.content = m.content.replace("/", "");
+      if (m.content.includes("/")) {
+        m.content = m.content.replace("/", "");
       }
       messageString += m.content + " ";
     }
@@ -26,62 +29,31 @@ messages.messages.forEach(function (m) {
 
 });
 
-let stopwords = new Set("i,me,my,myself,we,us,our,ours,ourselves,you,your,yours,yourself,yourselves,he,him,his,himself,she,her,hers,herself,it,its,itself,they,them,their,theirs,themselves,what,which,who,whom,whose,this,that,these,those,am,is,are,was,were,be,been,being,have,has,had,having,do,does,did,doing,will,would,should,can,could,ought,i'm,you're,he's,she's,it's,we're,they're,i've,you've,we've,they've,i'd,you'd,he'd,she'd,we'd,they'd,i'll,you'll,he'll,she'll,we'll,they'll,isn't,aren't,wasn't,weren't,hasn't,haven't,hadn't,doesn't,don't,didn't,won't,wouldn't,shan't,shouldn't,can't,cannot,couldn't,mustn't,let's,that's,who's,what's,here's,there's,when's,where's,why's,how's,a,an,the,and,but,if,or,because,as,until,while,of,at,by,for,with,about,against,between,into,through,during,before,after,above,below,to,from,up,upon,down,in,out,on,off,over,under,again,further,then,once,here,there,when,where,why,how,all,any,both,each,few,more,most,other,some,such,no,nor,not,only,own,same,so,than,too,very,say,says,said,shall,it'll".split(","))
-
 let messageWords = messageString.split(/[\s.]+/g)
   .map(w => w.replace(/^[“‘"\-—()\[\]{}*#|]+/g, ""))
   .map(w => w.replace(/[;:.!?()\[\]{},"'’”\-—]+$/g, ""))
   .map(w => w.replace(/['’]s$/g, ""))
   .map(w => w.substring(0, 30))
   .map(w => w.toLowerCase())
-  .filter(w => w && !stopwords.has(w));
-
-// messageWords = [...new Set(messageWords)];
-
-messageWords = messageWords.filter(w => !w.includes("ð") && !w.includes("\u009f") && !w.includes("\u0098") && !w.includes("\u008a") && !w.includes("â"));
-
-let numRegex = /\d+/g;
-messageWords = messageWords.filter(w => !numRegex.test(w));
-messageWords = messageWords.map(w => w.replace(/\d+/g, "REMOVE!!!")).filter(w => !w.includes("REMOVE!!!"));
-messageWords = messageWords.filter(w => !w.includes("^"));
-
-let letterRegex = /^[a-zA-Z]$/g;
-messageWords = messageWords.filter(w => !letterRegex.test(w));
+  .filter(w => w && !stopwords.has(w))
+  .filter(w => !w.includes("ð") && !w.includes("\u009f") && !w.includes("\u0098") && !w.includes("\u008a") && !w.includes("â"))
+  .filter(w => !numRegex.test(w))
+  .map(w => w.replace(/\d+/g, "REMOVE!!!")).filter(w => !w.includes("REMOVE!!!"))
+  .filter(w => !w.includes("^"))
+  .filter(w => !letterRegex.test(w));
 
 const counts = {};
 messageWords.forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-// console.log(counts);
-console.log(Object.keys(counts).length);
-for (const key in counts) {
-  if (counts[key] < 7 || key.length < 2) {
-    delete counts[key];
-  }
-}
-console.log(Object.keys(counts).length);
-console.log(counts);
 
 // set the dimensions and margins of the graph
 let margin = { top: 10, right: 10, bottom: 10, left: 10 },
   width = 1200 - margin.left - margin.right,
-  height = 600 - margin.top - margin.bottom;
+  height = 550 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
-let svg = d3.select("#wordCloud").append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-  .attr("transform",
-    "translate(" + margin.left + "," + margin.top + ")");
+let svg;
 
-// Constructs a new cloud layout instance. It run an algorithm to find the position of words that suits your requirements
-let layout = d3.layout.cloud()
-  .size([width, height])
-  .words(Object.keys(counts).map(function (d) { return { text: d, size: counts[d] }; }))
-  .padding(2)
-  .fontSize(function (d) { return Math.sqrt(d.size) * 3; })
-  .rotate(function() { return ~~(Math.random() * 4) * 30 - 60;})
-  .on("end", draw);
-layout.start();
+let layout;
 
 // This function takes the output of 'layout' above and draw the words
 // Better not to touch it. To change parameters, play with the 'layout' variable above
@@ -100,3 +72,42 @@ function draw(words) {
     .text(function (d) { return d.text; });
 }
 
+
+function main() {
+  // console.log(counts);
+  console.log(Object.keys(counts).length);
+  for (const key in counts) {
+    if (counts[key] < 7 || key.length < 2) {
+      delete counts[key];
+    }
+  }
+  console.log(Object.keys(counts).length);
+  console.log(counts);
+
+  svg = d3.select("#wordCloud").append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .style("font-family", "Quicksand")
+  .attr("transform",
+    "translate(" + margin.left + "," + margin.top + ")");
+
+  // Constructs a new cloud layout instance. It run an algorithm to find the position of words that suits your requirements
+  layout = d3.layout.cloud()
+    .size([width, height])
+    .words(Object.keys(counts).map(function (d) { return { text: d, size: counts[d] }; }))
+    .padding(4.5)
+    .fontSize(function (d) { return Math.sqrt(d.size) * 2; })
+    .rotate(function () { return ~~(Math.random() * 4) * 30 - 60; })
+    .on("end", draw);
+  layout.start();
+}
+
+window.onload = function () {
+  main();
+};
+
+document.getElementById("redraw").onclick = function() {
+  d3.select("svg").remove();
+	main();
+};

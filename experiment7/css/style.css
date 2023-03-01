@@ -13,7 +13,22 @@ body {
     align-items: center;
 }
 
-#canvas-container {
-    width: 100%;
-    height: 600px;
+h2 {
+    text-align: center;
+}
+
+svg {
+    background-color: rgb(211, 235, 198);
+}
+
+text {
+    fill: rgb(5, 29, 12);
+}
+
+text:hover {
+    fill: rgb(222, 182, 147);
+}
+
+button {
+    font-family: 'Quicksand', sans-serif;
 }
