@@ -1,6 +1,6 @@
 // Author: Anika Mahajan
 // Date: 03/02/2023
-// Purpose: Experiment 7 - Data Visualization
+// Purpose: Experiment 7 - Data Visualization & Networks
 // for CMPM 169 taught by Wes Modes at UCSC Winter 2023
 
 // Code Attributions
